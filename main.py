@@ -12,14 +12,9 @@ CX, CY = WIDTH / 2, HEIGHT / 2
 CAMX, CAMY = 0, 0
 
 G = 6.67428e-11
-AU = 149.9e9
-SOLAR_MASS = 1.989e30
-EARTH_MASS = 5.972e24
 
 ZOOM = 8e-10
-TIMESTEP = 2600*24
-
-ORBIT_TRAIL_LENGTH = 600
+TIMESTEP = 86400
 
 OBJECTS = []
 
@@ -27,14 +22,14 @@ OBJECTS = []
 class Resources:
     font = pygame.font.SysFont('Consolas', 12)
     space_image = pygame.transform.scale(
-        pygame.image.load("space.jpg").convert(),
+        pygame.image.load("/imgs/space.jpg").convert(),
         (WIDTH, WIDTH)
     )
 
 
 class Object:
     def __init__(self, name, mass, x, y, r, c=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
-                 vx = 0, vy = 0):
+                 vx=0, vy=0):
         self.name = name
         self.mass = mass
         self.x = x
@@ -45,3 +40,51 @@ class Object:
         self.vy = vy
 
         OBJECTS.append(self)
+
+    def vel(self):
+        return math.sqrt(self.vx**2 + self.vy**2)
+
+    def draw(self, zoom):
+        x = CX + self.x * zoom
+        y = CY + self.y * zoom
+        pygame.draw.circle(screen, self.c, (x, y), self.r)
+
+
+class Info:
+    def __init__(self, sim):
+        self.info = sim
+
+    @staticmethod
+    def draw(self):
+        topleft_texts = []
+        y = 0
+        for _text in topleft_texts:
+            y += 20
+            text = Resources.font.render(_text, False, (255, 255, 255))
+            screen.blit(text, (20, y))
+
+        text = Resources.font.render("Zoom: " + str(ZOOM), False, (225, 225, 225))
+        rect = text.get_rect()
+        rect.bottomleft = (20, HEIGHT - 20)
+        screen.blit(text, rect)
+
+
+class Simulation:
+    def __init__(self):
+        self.info = Info(self)
+        Object("Sun")
+
+    def run(self):
+        clock = pygame.time.Clock()
+        running = True
+
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+            for object in OBJECTS:
+                pass
+
+
+Simulation().run()
