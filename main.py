@@ -22,14 +22,14 @@ OBJECTS = []
 class Resources:
     font = pygame.font.SysFont('Consolas', 12)
     space_image = pygame.transform.scale(
-        pygame.image.load("/imgs/space.jpg").convert(),
+        pygame.image.load("imgs/space.png").convert(),
         (WIDTH, WIDTH)
     )
 
 
 class Object:
     def __init__(self, name, mass, x, y, r, c=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
-                 vx=0, vy=0):
+                 vx=0.0, vy=0.0):
         self.name = name
         self.mass = mass
         self.x = x
@@ -72,19 +72,26 @@ class Info:
 class Simulation:
     def __init__(self):
         self.info = Info(self)
-        Object("Sun")
+        Object("Sun", 1.9891e30, 0, 0, 695e6, vx=1e3, vy=1e3)
 
     def run(self):
         clock = pygame.time.Clock()
         running = True
 
         while running:
+            rect = Resources.space_image.get_rect()
+            rect.center = WIDTH/2, HEIGHT/2
+            screen.blit(Resources.space_image, rect)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-            for object in OBJECTS:
-                pass
+            for obj in OBJECTS:
+                obj.draw(1)
+
+            pygame.display.flip()
+            clock.tick(60)
 
 
 Simulation().run()
