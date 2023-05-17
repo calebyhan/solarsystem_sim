@@ -7,12 +7,11 @@ WIDTH, HEIGHT = 1200, 700
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("The Solar System")
-CX, CY = WIDTH / 2, HEIGHT / 2
 
+CX, CY = WIDTH / 2, HEIGHT / 2
 CAMX, CAMY = 0, 0
 
 G = 6.67428e-11
-
 ZOOM = 8e-10
 TIMESTEP = 86400
 
@@ -79,16 +78,16 @@ class Simulation:
         running = True
 
         while running:
-            rect = Resources.space_image.get_rect()
-            rect.center = WIDTH/2, HEIGHT/2
-            screen.blit(Resources.space_image, rect)
+            # rect = Resources.space_image.get_rect()
+            # rect.center = WIDTH/2, HEIGHT/2
+            # screen.blit(Resources.space_image, rect)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
             for obj in OBJECTS:
-                obj.draw(1)
+                obj.draw(1e-100)
 
             pygame.display.flip()
             clock.tick(60)
